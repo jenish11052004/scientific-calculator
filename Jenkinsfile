@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout Code') {
             steps {
-                git branch: 'main', 
+                git branch: 'main',
                     url: 'https://github.com/jenish11052004/scientific-calculator.git'
             }
         }
@@ -13,14 +13,14 @@ pipeline {
         stage('Set Up Python Environment') {
             steps {
                 sh 'python3 -m venv venv'
-                sh 'source venv/bin/activate && pip install --upgrade pip'
-                sh 'source venv/bin/activate && pip install -r requirements.txt'
+                sh './venv/bin/pip install --upgrade pip'
+                sh './venv/bin/pip install -r requirements.txt'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'source venv/bin/activate && pytest -v'
+                sh './venv/bin/pytest -v'
             }
         }
     }
