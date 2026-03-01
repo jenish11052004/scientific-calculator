@@ -36,3 +36,5 @@ def ln(number: float):
 @app.get("/power")
 def pow(x: float, b: float):
     return {"result": power(x, b)}
+
+#changes to check webhook
