@@ -7,7 +7,7 @@ from calculator import square_root, factorial, natural_log, power
 # -----------------------
 
 def test_square_root_positive():
-    assert square_root(16) == 4.0
+    assert square_root(16) == 999.0
 
 
 def test_square_root_zero():
