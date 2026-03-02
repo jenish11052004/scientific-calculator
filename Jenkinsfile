@@ -23,14 +23,35 @@ pipeline {
                 sh './venv/bin/pytest -v'
             }
         }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t jenish011/scientific-calculator:latest .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                        docker push jenish011/scientific-calculator:latest
+                    '''
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo 'Build SUCCESS: All tests passed!'
+            echo 'Build SUCCESS: Tests passed and Docker image pushed!'
         }
         failure {
-            echo 'Build FAILED: Check test errors.'
+            echo 'Build FAILED: Check logs.'
         }
     }
 }
