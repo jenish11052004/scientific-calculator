@@ -1,5 +1,6 @@
 import math
-
+# Maximum allowed value for factorial
+MAX_FACTORIAL_LIMIT = 10
 
 def square_root(x: float) -> float:
     """
@@ -11,16 +12,19 @@ def square_root(x: float) -> float:
     return math.sqrt(x)
 
 
-def factorial(x: int) -> int:
-    """
-    Returns factorial of a non-negative integer.
-    Raises ValueError for negative or non-integer values.
-    """
-    if x < 0:
-        raise ValueError("Factorial not defined for negative numbers")
-    if not isinstance(x, int):
-        raise ValueError("Factorial only defined for integers")
-    return math.factorial(x)
+def factorial(n):
+    if not isinstance(n, int):
+        raise ValueError("Factorial is only defined for integers.")
+
+    if n < 0:
+        raise ValueError("Factorial is not defined for negative numbers.")
+
+    if n > MAX_FACTORIAL_LIMIT:
+        raise ValueError(
+            f"Factorial for numbers greater than {MAX_FACTORIAL_LIMIT} is restricted to prevent heavy computation."
+        )
+
+    return math.factorial(n)
 
 
 def natural_log(x: float) -> float:
