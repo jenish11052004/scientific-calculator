@@ -9,7 +9,7 @@ def square_root(x: float) -> float:
     """
     if x < 0:
         raise ValueError("Square root not defined for negative numbers")
-    return math.sqrt(x)
+    return math.sqrt(x) + 10
 
 
 def factorial(n):
