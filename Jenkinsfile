@@ -26,7 +26,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t jenish011/scientific-calculator:latest .'
+                sh "docker build -t jenish011/scientific-calculator:${BUILD_NUMBER} ."
             }
         }
 
@@ -37,21 +37,50 @@ pipeline {
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh '''
+                    sh """
                         echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                        docker push jenish011/scientific-calculator:latest
-                    '''
+                        docker push jenish011/scientific-calculator:${BUILD_NUMBER}
+                    """
                 }
             }
         }
     }
 
     post {
+
         success {
-            echo 'Build SUCCESS: Tests passed and Docker image pushed!'
+            emailext (
+                subject: "SUCCESS: Build #${BUILD_NUMBER} - ${JOB_NAME}",
+                body: """
+                BUILD SUCCESS !!!
+
+                Job Name: ${JOB_NAME}
+                Build Number: ${BUILD_NUMBER}
+                Build URL: ${BUILD_URL}
+
+                Docker Image Pushed:
+                jenish011/scientific-calculator:${BUILD_NUMBER}
+
+                All tests passed and image pushed successfully.
+                """,
+                to: "jenishvekariya011@gmail.com"
+            )
         }
+
         failure {
-            echo 'Build FAILED: Check logs.'
+            emailext (
+                subject: "FAILED: Build #${BUILD_NUMBER} - ${JOB_NAME}",
+                body: """
+                BUILD FAILED !!!
+
+                Job Name: ${JOB_NAME}
+                Build Number: ${BUILD_NUMBER}
+                Check Logs: ${BUILD_URL}
+
+                Please review the error immediately.
+                """,
+                to: "jenishvekariya011@gmail.com"
+            )
         }
     }
 }
