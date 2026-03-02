@@ -1,0 +1,10 @@
+---
+- name: Start Scientific Calculator Container
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Start container
+      command: docker start scientific-calculator-container
+
+#ansible-playbook -i inventory.ini start.yml

@@ -1,0 +1,48 @@
+---
+- name: Deploy Scientific Calculator App
+  hosts: web
+  become: yes
+
+  tasks:
+
+    - name: Install required packages
+      yum:
+        name:
+          - yum-utils
+        state: present
+
+    - name: Add Docker repository
+      command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+      args:
+        creates: /etc/yum.repos.d/docker-ce.repo
+
+    - name: Install Docker
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Pull Docker image from DockerHub
+      command: docker pull jenish011/scientific-calculator:latest
+
+    - name: Stop existing container if running
+      command: docker rm -f scientific-calculator-container
+      ignore_errors: yes
+
+    - name: Run Docker container
+      command: >
+        docker run -d
+        -p 8000:8000
+        --name scientific-calculator-container
+        jenish011/scientific-calculator:latest
+
+
+# ansible-playbook -i inventory.ini deploy.yml

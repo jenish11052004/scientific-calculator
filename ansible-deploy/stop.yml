@@ -1,0 +1,11 @@
+---
+- name: Stop Scientific Calculator Container
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Stop container
+      command: docker stop scientific-calculator-container
+      ignore_errors: yes
+
+#ansible-playbook -i inventory.ini stop.yml

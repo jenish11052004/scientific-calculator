@@ -1,0 +1,10 @@
+---
+- name: Restart Scientific Calculator Container
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Restart container
+      command: docker restart scientific-calculator-container
+
+#ansible-playbook -i inventory.ini restart.yml
