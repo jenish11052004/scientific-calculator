@@ -38,6 +38,3 @@ def pow(x: float, b: float):
     return {"result": power(x, b)}
 
 #changes to check webhook
-#again test after crum issue
-#changes in webhook url https://unobtainable-werner-unpensioned.ngrok-free.dev to https://unobtainable-werner-unpensioned.ngrok-free.dev/github-webhook/ because of github plugin
-#check
